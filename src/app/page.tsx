@@ -2,443 +2,935 @@
 "use client";
 
 import NextImage from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { FAQAccordion } from "@/components/FAQAccordion";
-import { TestimonialCard } from "@/components/TestimonialCard";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 
-
-
-
+/* ─── Constants ─── */
 const WHATSAPP_URL =
-  "https://wa.me/919769761766?text=Hi%20Dietitian%20Ashwini%2C%20I%27d%20like%20to%20book%20a%20diet%20consultation.";
+  "https://wa.me/919769761766?text=Hi%20Dt.%20Ashwini%2C%20I%20am%20an%20NRI%20and%20would%20like%20to%20apply%20for%20a%20Clinical%20Assessment%20Call%20regarding%20my%20parents%27%20health.";
 
-export default function HomePage() {
+/* ─── Animated section wrapper ─── */
+function AnimatedSection({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <div className="space-y-0">
-      {/* HERO */}
-      <section className="relative min-h-[90vh] overflow-hidden bg-gradient-to-br from-sky via-white to-cream">
-        <div className="pointer-events-none absolute top-20 right-10 h-80 w-80 rounded-full bg-primary-100/40 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-10 left-10 h-80 w-80 rounded-full bg-sage-100/40 blur-3xl" />
+    <motion.section
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
 
-        <div className="relative mx-auto flex max-w-7xl items-center px-4 pb-20 pt-24 md:px-6 lg:px-8 lg:pt-28">
-          <div className="grid gap-12 lg:grid-cols-[1.5fr,1fr] lg:items-center">
-            {/* Left text */}
+/* ─── Floating particles background ─── */
+function ParticleField() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-gold-500/10"
+          style={{
+            width: Math.random() * 4 + 2,
+            height: Math.random() * 4 + 2,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.2, 0.6, 0.2],
+          }}
+          transition={{
+            duration: Math.random() * 4 + 4,
+            repeat: Infinity,
+            delay: Math.random() * 3,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── Credential badge component ─── */
+function CredentialBadge({
+  icon,
+  text,
+}: {
+  icon: string;
+  text: string;
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-slate-300 backdrop-blur-sm">
+      <span>{icon}</span>
+      <span>{text}</span>
+    </div>
+  );
+}
+
+/* ─── Stats counter ─── */
+function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const step = target / 40;
+    const interval = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(interval);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [isInView, target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/*  MAIN PAGE                                                  */
+/* ═══════════════════════════════════════════════════════════ */
+
+export default function FunnelPage() {
+  return (
+    <div className="relative">
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 1 — HERO                          */}
+      {/* ═══════════════════════════════════════════ */}
+      <section className="relative flex min-h-screen items-center overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-midnight-950 via-midnight-900 to-midnight-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(232,200,101,0.06),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(5,200,176,0.04),transparent_50%)]" />
+        <ParticleField />
+
+        {/* Decorative line */}
+        <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
+
+        <div className="relative z-10 container-wide px-4 pb-20 pt-16 md:px-6 lg:px-8">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.4fr,1fr] lg:gap-16">
+            {/* Left — Copy */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.8 }}
             >
-              <p className="mb-4 text-xs font-heading font-semibold uppercase tracking-[0.35em] text-terracotta-500">
-                From Uncertainty to Confidence
-              </p>
+              <div className="badge mb-6">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-gold-400" />
+                Accepting 8 Families This Quarter
+              </div>
 
-              <h1 className="mb-6 font-display text-4xl font-bold leading-[1.1] tracking-tight text-warmGray-900 sm:text-5xl lg:text-6xl xl:text-7xl dark:text-warmGray-50">
-                Your Journey to{" "}
-                <span className="bg-gradient-to-r from-primary-600 to-sage-600 bg-clip-text text-transparent">
-                  Better Health
-                </span>{" "}
-                Starts Here
+              <h1 className="mb-6 font-display text-4xl leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-[4.2rem]">
+                Your Parents Are in Mumbai.{" "}
+                <br className="hidden sm:block" />
+                Their Diabetes Is{" "}
+                <span className="text-gradient-gold">Unmanaged.</span>
+                <br className="hidden sm:block" />
+                <span className="text-slate-400">
+                  And You&apos;re 12,000 km Away.
+                </span>
               </h1>
 
-              <p className="mb-8 max-w-xl text-base text-warmGray-700 md:text-lg dark:text-warmGray-100">
-                Clinical diet counselling for diabetes, heart health, PCOS,
-                obesity and elderly care using realistic Indian meals, not
-                crash diets.
+              <p className="mb-8 max-w-2xl text-base leading-relaxed text-slate-400 md:text-lg">
+                The <strong className="text-white">90-Day Concierge Parental Health Protocol</strong> — built by a{" "}
+                <strong className="text-gold-300">25-year veteran Clinical Dietitian</strong> who
+                coordinates with their Mumbai doctors, trains their household
+                cook, and sends you a bi-weekly clinical dashboard.{" "}
+                <em className="text-teal-400">So you stop worrying at 3 AM.</em>
               </p>
 
-              <div className="mb-8 flex flex-wrap gap-4">
+              <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-terracotta-500 to-terracotta-600 px-7 py-3.5 font-heading text-sm font-semibold text-white shadow-xl transition-all hover:scale-105 hover:shadow-2xl"
+                  id="hero-cta"
+                  className="group inline-flex items-center justify-center gap-3 rounded-full px-8 py-4 font-heading text-sm font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105"
+                  style={{
+                    background: "linear-gradient(135deg, #e8c865, #d4a229, #e2b93e)",
+                    color: "#0c0c1a",
+                    boxShadow: "0 0 30px rgba(232,200,101,0.35)",
+                  }}
                 >
-                  Start on WhatsApp
+                  Apply for Clinical Assessment Call
                   <svg
-                    className="h-4 w-4"
+                    className="h-4 w-4 transition-transform group-hover:translate-x-1"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     fill="none"
                   >
                     <path
                       d="M5 12h14M13 6l6 6-6 6"
-                      strokeWidth={2}
+                      strokeWidth={2.5}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
                 </a>
-                <Link
-                  href="/how-it-works"
-                  className="inline-flex items-center gap-3 rounded-full border border-warmGray-300 bg-white/80 px-7 py-3.5 font-heading text-sm font-semibold text-warmGray-800 shadow-sm backdrop-blur transition-all hover:bg-white hover:shadow-lg dark:border-warmGray-600 dark:bg-warmGray-900/80 dark:text-warmGray-50"
-                >
-                  {/* <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-500 text-xs text-white">
-                    ▶
-                  </span> */}
-                  How It Works
-                </Link>
+                <span className="text-xs text-slate-500">
+                  No payment required to apply
+                </span>
               </div>
 
-              {/* Trust indicators */}
-              <div className="flex flex-wrap items-center gap-6 text-xs text-warmGray-600 dark:text-warmGray-300">
-                <div className="flex items-center gap-2">
-                  <div className="flex text-yellow-400">
-                    {"★★★★★"}
-                  </div>
-                  <span className="font-medium">
-                    500+ clients counselled across India
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-sage-500" />
-                  <span>20+ years clinical & wellness experience</span>
-                </div>
+              {/* Trust strip */}
+              <div className="flex flex-wrap gap-2">
+                <CredentialBadge icon="🏥" text="KEM Hospital Trained" />
+                <CredentialBadge icon="🏢" text="Former VLCC Area Head" />
+                <CredentialBadge icon="📊" text="500+ Clinical Cases" />
               </div>
             </motion.div>
 
-            {/* Right visual */}
+            {/* Right — Portrait */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative hidden lg:block"
             >
-              <div className="relative overflow-hidden rounded-[2.5rem] border border-white/70 bg-white shadow-2xl">
-  <NextImage
-    src="/ashwini-diet.jpeg"
-    alt="Diet consultation with Ashwini"
-    width={640}
-    height={800}
-    className="h-full w-full object-cover"
-    priority
-  />
-  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-  <div className="absolute bottom-5 left-5 rounded-2xl bg-white/90 px-4 py-3 text-xs text-warmGray-800 shadow-lg backdrop-blur">
-    <p className="font-heading text-xs font-semibold text-sage-700">
-      1:1 Clinical Diet Counselling
-    </p>
-    <p className="text-[11px] text-warmGray-600">
-      Diabetes • Heart Health • PCOS • Elderly Nutrition
-    </p>
-  </div>
-</div>
+              {/* Glow ring */}
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-gold-500/20 via-transparent to-teal-500/10 blur-2xl" />
 
+              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 shadow-2xl">
+                <NextImage
+                  src="/ashwini.gawad.jpeg"
+                  alt="Dt. Ashwini Gawad — Senior Clinical Dietitian"
+                  width={500}
+                  height={600}
+                  className="h-auto w-full object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-midnight-950/80 via-midnight-950/20 to-transparent" />
 
+                {/* Floating credential card */}
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="absolute bottom-6 left-6 right-6 rounded-xl border border-gold-500/20 bg-midnight-950/80 p-4 backdrop-blur-xl"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-500/20 text-lg">
+                      ⚕️
+                    </div>
+                    <div>
+                      <p className="text-sm font-heading font-bold text-white">
+                        Dt. Ashwini Gawad
+                      </p>
+                      <p className="text-xs text-gold-400">
+                        25+ Years Clinical Experience
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
+
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 h-32 w-full bg-gradient-to-t from-midnight-950 to-transparent" />
       </section>
 
-      {/* TRUST BAR */}
-      <section className="border-y border-warmGray-200 bg-white dark:border-warmGray-800 dark:bg-warmGray-900">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:px-6 lg:px-8">
-          <p className="text-xs font-heading font-semibold uppercase tracking-[0.23em] text-warmGray-500 dark:text-warmGray-300">
-            Previously Associated With
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-10 opacity-70 grayscale transition-all hover:opacity-100 hover:grayscale-0">
-            {/* Replace with real SVG/PNGs later */}
-            <span className="text-xs font-heading text-warmGray-400">
-              KEM Hospital
-            </span>
-            <span className="text-xs font-heading text-warmGray-400">
-              Novartis
-            </span>
-            <span className="text-xs font-heading text-warmGray-400">
-              VLCC Healthcare
-            </span>
-            <span className="text-xs font-heading text-warmGray-400">
-              Talwalkars
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* PROBLEM / SOLUTION */}
-      <section className="bg-white px-4 py-20 md:px-6 lg:px-8 dark:bg-warmGray-950">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-3xl">
-            <h2 className="mb-3 font-heading text-3xl font-semibold text-warmGray-900 md:text-4xl dark:text-warmGray-50">
-              When health reports are scary and advice is confusing
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 2 — VSL VIDEO                     */}
+      {/* ═══════════════════════════════════════════ */}
+      <AnimatedSection className="section-padding relative bg-midnight-950">
+        <div className="container-narrow">
+          <div className="mb-8 text-center">
+            <span className="badge-teal mb-4 inline-flex">Clinical Briefing</span>
+            <h2 className="mb-4 font-display text-3xl text-white md:text-4xl lg:text-5xl">
+              Watch Before You Apply
             </h2>
-            <p className="text-sm text-warmGray-600 md:text-base dark:text-warmGray-200">
-              Most people get diet charts that are copied from Google or
-              impossible to follow in real life. That leads to guilt,
-              frustration and no real change in blood reports.
+            <p className="mx-auto max-w-2xl text-sm text-slate-400 md:text-base">
+              This 4-minute clinical briefing explains exactly how the Protocol works
+              — and whether your family qualifies.
             </p>
           </div>
 
-          <div className="grid gap-10 md:grid-cols-2">
-            <div className="rounded-3xl border border-terracotta-100 bg-blush p-8 shadow-sm dark:border-terracotta-500/30 dark:bg-warmGray-900/60">
-              <div className="mb-3 text-xs font-heading font-semibold uppercase tracking-[0.2em] text-terracotta-600">
-                The Problem
-              </div>
-              <ul className="space-y-3 text-sm text-warmGray-700 dark:text-warmGray-100">
-                <li>• Confusing advice from friends, social media and doctors.</li>
-                <li>• Complex meal plans that don&apos;t match your kitchen.</li>
-                <li>• Sugar, BP and cholesterol still not under control.</li>
-                <li>• Elderly parents skipping meals or eating randomly.</li>
-              </ul>
-            </div>
-
-            <div className="rounded-3xl border border-sage-100 bg-mint p-8 shadow-sm dark:border-sage-500/30 dark:bg-warmGray-900/60">
-              <div className="mb-3 text-xs font-heading font-semibold uppercase tracking-[0.2em] text-sage-600">
-                The Solution
-              </div>
-              <ul className="space-y-3 text-sm text-warmGray-700 dark:text-warmGray-50">
-                <li>
-                  • Structured 1:1 counselling focused on lab reports and your
-                  real routine.
-                </li>
-                <li>
-                  • Simple Indian meals with clear protein targets for healthy
-                  ageing.
-                </li>
-                <li>
-                  • Regular follow-up and adjustments based on progress.
-                </li>
-                <li>
-                  • Full-day plans for parents, kids and working couples so the
-                  whole house eats better.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3-STEP PROCESS */}
-      <section className="bg-gradient-to-br from-sky via-white to-mint px-4 py-20 md:px-6 lg:px-8 dark:from-warmGray-900 dark:via-warmGray-950 dark:to-warmGray-900">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center">
-            <p className="mb-2 text-xs font-heading font-semibold uppercase tracking-[0.28em] text-primary-600 dark:text-primary-300">
-              How It Works
-            </p>
-            <h2 className="mb-3 font-heading text-3xl font-semibold text-warmGray-900 md:text-4xl dark:text-warmGray-50">
-              Your journey in 3 clear steps
-            </h2>
-            <p className="mx-auto max-w-2xl text-sm text-warmGray-600 md:text-base dark:text-warmGray-200">
-              No fancy products, no crash diets. Just structured, realistic
-              changes that improve reports and energy levels.
-            </p>
-          </div>
-
-          <div className="grid gap-10 md:grid-cols-3">
-            {[
-              {
-                title: "Discover",
-                desc: "We understand medical reports, symptoms, medications, food habits and family routine in detail.",
-                badge: "Step 1",
-              },
-              {
-                title: "Design",
-                desc: "You receive a personalised plan with easy Indian meals, protein targets and clear do's & don'ts.",
-                badge: "Step 2",
-              },
-              {
-                title: "Deliver",
-                desc: "We track your progress, tweak the plan and support you till new habits become your normal.",
-                badge: "Step 3",
-              },
-            ].map((step, idx) => (
-              <div
-                key={step.title}
-                className="relative flex h-full flex-col rounded-3xl border border-warmGray-200 bg-white p-7 shadow-md transition-all hover:-translate-y-1 hover:shadow-2xl dark:border-warmGray-700 dark:bg-warmGray-900"
-              >
-                <div className="mb-4 inline-flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 font-heading text-xs font-semibold text-primary-700 dark:bg-primary-900/60 dark:text-primary-200">
-                    {idx + 1}
-                  </span>
-                  <span className="text-[11px] font-heading uppercase tracking-[0.18em] text-warmGray-500 dark:text-warmGray-300">
-                    {step.badge}
-                  </span>
-                </div>
-                <h3 className="mb-3 font-heading text-xl font-semibold text-warmGray-900 dark:text-warmGray-50">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-warmGray-600 dark:text-warmGray-200">
-                  {step.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* STATS */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-warmGray-900 via-primary-900 to-warmGray-900 px-4 py-20 text-white md:px-6 lg:px-8">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="h-full w-full"
-            style={{
-              backgroundImage:
-                'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-            }}
-          />
-        </div>
-        <div className="relative mx-auto max-w-7xl">
-          <div className="mb-10 text-center">
-            <h2 className="font-heading text-3xl font-semibold md:text-4xl">
-              Experience that compounds into results
-            </h2>
-            <p className="mt-3 text-sm text-primary-100 md:text-base">
-              Behind every number here is a real person whose health now feels
-              under control.
-            </p>
-          </div>
-          <div className="grid gap-10 text-center md:grid-cols-4">
-            {[
-              {
-                value: "20+",
-                label: "Years Experience",
-                sub: "Clinical & corporate wellness",
-              },
-              {
-                value: "500+",
-                label: "Clients Counselled",
-                sub: "Across India & NRI families",
-              },
-              {
-                value: "80L+",
-                label: "Centre Revenue",
-                sub: "Enabled at VLCC units",
-              },
-              {
-                value: "25+",
-                label: "Centres Guided",
-                sub: "Across West, South & Central India",
-              },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="font-display text-5xl font-bold text-primary-100 md:text-6xl">
-                  {stat.value}
-                </div>
-                <div className="mt-2 font-heading text-sm font-semibold">
-                  {stat.label}
-                </div>
-                <div className="mt-1 text-xs text-primary-100/80">
-                  {stat.sub}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="bg-cream px-4 py-20 md:px-6 lg:px-8 dark:bg-warmGray-950">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2 className="mb-2 font-heading text-3xl font-semibold text-warmGray-900 md:text-4xl dark:text-warmGray-50">
-                Real people, real improvements
-              </h2>
-              <p className="max-w-xl text-sm text-warmGray-600 md:text-base dark:text-warmGray-200">
-                Names changed for privacy, but the journeys and lab report
-                changes are real.
-              </p>
-            </div>
-          </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            <TestimonialCard
-              name="A.M., 58 yrs"
-              context="Type 2 diabetes & cholesterol"
-              quote="In three months my fasting sugar stabilised and I finally understood how to eat without fear. The plan used my existing home food, not imported products."
-              result="HbA1c reduced from 8.2 to 7.1 in 3.5 months with medication + diet changes."
-            />
-            <TestimonialCard
-              name="S.P., 32 yrs"
-              context="PCOS & weight gain"
-              quote="Instead of just 'weight loss', we focused on cycle regularity, energy levels and protein intake. I never felt starved or judged."
-              result="Lost 6 kg in 10 weeks while improving energy and hair fall."
-            />
-            <TestimonialCard
-              name="NRI Client"
-              context="Elderly parents in Mumbai"
-              quote="Being abroad, I wanted someone who could guide my parents patiently and send structured plans. Ashwini handled their BP, sugar and meal routine with care."
-              result="Parents now follow a clear, easy routine and sugar readings are more stable."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ + FINAL CTA */}
-      <section className="bg-white px-4 pb-20 pt-16 md:px-6 lg:px-8 dark:bg-warmGray-950">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-12 md:grid-cols-[1.2fr,1fr] md:items-start">
-            <div>
-              <h2 className="mb-3 font-heading text-3xl font-semibold text-warmGray-900 md:text-4xl dark:text-warmGray-50">
-                Your questions, answered
-              </h2>
-              <p className="mb-6 max-w-xl text-sm text-warmGray-600 md:text-base dark:text-warmGray-200">
-                Clear expectations from the start so you know exactly what
-                you&apos;re signing up for.
-              </p>
-              <FAQAccordion
-                items={[
-                  {
-                    question:
-                      "What conditions do you commonly work with?",
-                    answer:
-                      "Diabetes, pre-diabetes, cardiac risk, high cholesterol, hypertension, PCOS, fatty liver, obesity, underweight cases and geriatric nutrition. We also plan recovery diets after surgery or serious illness.",
-                  },
-                  {
-                    question:
-                      "Are the plans complicated or full of fancy ingredients?",
-                    answer:
-                      "No. Plans are built primarily around your current kitchen, timing and family habits. The focus is on protein targets, smart carb choices and timing, not exotic ingredients.",
-                  },
-                  {
-                    question: "How are consultations conducted?",
-                    answer:
-                      "You can meet in person at the charitable trust hospital OPD in Borivali (East) or via online video / phone consultation. Follow-ups are scheduled based on your case.",
-                  },
-                  {
-                    question:
-                      "Can my parents follow this if they are elderly or fussy eaters?",
-                    answer:
-                      "Yes. Elderly care is a key focus. Plans are made realistic for chewing capacity, appetite, sleep pattern and medications, with clear instructions for caregivers.",
-                  },
-                  {
-                    question:
-                      "How do we start if we are living outside India?",
-                    answer:
-                      "You can book your first call via WhatsApp. We will review lab reports, medications and food availability in your country, then build an Indian-style plan adapted to your reality.",
-                  },
-                ]}
-              />
-            </div>
-
-            <div className="flex flex-col justify-between rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50 via-white to-mint p-7 shadow-lg dark:border-primary-500/40 dark:bg-gradient-to-br dark:from-warmGray-900 dark:via-warmGray-950 dark:to-warmGray-900">
-              <div>
-                <p className="mb-2 text-xs font-heading uppercase tracking-[0.25em] text-primary-700 dark:text-primary-300">
-                  Final Step
-                </p>
-                <h3 className="mb-3 font-heading text-2xl font-semibold text-warmGray-900 dark:text-warmGray-50">
-                  Ready to take control of your health?
-                </h3>
-                <p className="mb-6 text-sm text-warmGray-700 dark:text-warmGray-100">
-                  Send a WhatsApp message with your name, age, city and main
-                  concern. You&apos;ll receive a reply with available slots for
-                  your first consultation.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-terracotta-500 to-terracotta-600 px-6 py-3.5 font-heading text-sm font-semibold text-white shadow-xl transition-all hover:scale-105 hover:shadow-2xl"
+          {/* Video Player Placeholder */}
+          <div className="relative mx-auto max-w-4xl overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_60px_rgba(232,200,101,0.06)]">
+            <div className="relative aspect-video bg-gradient-to-br from-midnight-800 to-midnight-900">
+              {/* Play button overlay */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-gold-500/50 bg-gold-500/20 backdrop-blur-sm"
                 >
-                  Message on WhatsApp
-                </a>
-                <p className="text-[11px] text-warmGray-500 dark:text-warmGray-300">
-                  💳 No online payment needed to message • 📍 Mumbai-based
-                  consultations with online support for NRI families.
+                  <svg className="ml-1 h-8 w-8 text-gold-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </motion.div>
+                <p className="text-sm font-heading text-slate-400">
+                  Video Coming Soon — Recording in Progress
+                </p>
+              </div>
+
+              {/* Corner decorations */}
+              <div className="absolute left-4 top-4 flex items-center gap-2">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-danger-500" />
+                <span className="text-xs font-heading uppercase tracking-widest text-slate-500">
+                  Clinical Briefing
+                </span>
+              </div>
+              <div className="absolute bottom-4 right-4 text-xs text-slate-600">
+                4:00
+              </div>
+            </div>
+          </div>
+
+          {/* VSL Framework Reference (for recording) */}
+          <div className="mt-8 glass-card p-6">
+            <p className="mb-4 text-center text-xs font-heading uppercase tracking-[0.2em] text-gold-400">
+              What You&apos;ll Learn in This Video
+            </p>
+            <div className="grid gap-4 sm:grid-cols-5">
+              {[
+                { time: "0:00", title: "The Wake-Up Call", desc: "Why 3 AM panic calls from India are a symptom of a broken system" },
+                { time: "0:30", title: "The Real Problem", desc: "Why local doctors and Instagram dietitians are failing your parents" },
+                { time: "1:30", title: "The Clinician", desc: "25 years of hospital-grade credentials you can trust" },
+                { time: "2:30", title: "The Protocol", desc: "The 3-phase system: Assess → Train → Monitor" },
+                { time: "3:30", title: "Next Steps", desc: "How to apply (if you qualify)" },
+              ].map((item, idx) => (
+                <div key={idx} className="text-center">
+                  <div className="mb-2 text-sm font-heading font-bold text-gold-300">
+                    {item.time}
+                  </div>
+                  <div className="mb-1 text-xs font-heading font-semibold text-white">
+                    {item.title}
+                  </div>
+                  <div className="text-[11px] leading-relaxed text-slate-500">
+                    {item.desc}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 3 — PAIN POINTS                   */}
+      {/* ═══════════════════════════════════════════ */}
+      <AnimatedSection className="section-padding relative">
+        {/* Dark red gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-midnight-950 via-[#120a0a] to-midnight-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.04),transparent_70%)]" />
+
+        <div className="container-narrow relative z-10">
+          <div className="mb-12 text-center">
+            <span className="badge-danger mb-4 inline-flex">The Reality</span>
+            <h2 className="mb-4 font-display text-3xl text-white md:text-4xl lg:text-5xl">
+              You Already Know Something Is Wrong
+            </h2>
+            <p className="mx-auto max-w-2xl text-sm text-slate-500 md:text-base">
+              You&apos;re not reading this by accident. One of these scenarios
+              kept you awake last night.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              {
+                icon: "📊",
+                scenario:
+                  "Your father told you his sugar was \"fine.\" Then you saw his lab report: HbA1c at 9.2. He doesn't understand what that number means. Neither does his cook.",
+                label: "The Denial",
+              },
+              {
+                icon: "🍳",
+                scenario:
+                  "Your mother's cook makes the same oil-heavy paratha and sabzi every day. You've tried explaining over video call. She smiles, nods, and changes nothing.",
+                label: "The Kitchen",
+              },
+              {
+                icon: "⏱️",
+                scenario:
+                  "The local doctor spent 4 minutes with your parents. You spent 4 hours on Google decoding the prescription. You still don't know if they should eat rice.",
+                label: "The System",
+              },
+            ].map((card, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.15 }}
+                className="group relative rounded-2xl border border-danger-700/20 bg-danger-500/[0.03] p-6 transition-all duration-300 hover:border-danger-600/30 hover:bg-danger-500/[0.06]"
+              >
+                <div className="absolute -top-px left-6 right-6 h-px bg-gradient-to-r from-transparent via-danger-500/40 to-transparent" />
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="text-2xl">{card.icon}</span>
+                  <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-danger-400">
+                    {card.label}
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed text-slate-300">
+                  {card.scenario}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 4 — CLINICAL AUTHORITY             */}
+      {/* ═══════════════════════════════════════════ */}
+      <AnimatedSection className="section-padding relative overflow-hidden">
+        <div className="absolute inset-0 bg-midnight-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_left,rgba(232,200,101,0.05),transparent_50%)]" />
+
+        <div className="container-wide relative z-10">
+          <div className="mb-12 text-center">
+            <span className="badge mb-4 inline-flex">Clinical Authority</span>
+            <h2 className="mb-4 font-display text-3xl text-white md:text-4xl lg:text-5xl">
+              This Is Not Another Instagram Dietitian
+            </h2>
+          </div>
+
+          <div className="grid items-start gap-12 lg:grid-cols-[1fr,1.3fr] lg:gap-16">
+            {/* Left — Photo + Credentials */}
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-gold-500/10 to-transparent blur-xl" />
+              <div className="relative overflow-hidden rounded-[2rem] border border-gold-500/20">
+                <NextImage
+                  src="/ashwini-diet.jpeg"
+                  alt="Dt. Ashwini Gawad — Clinical Setting"
+                  width={600}
+                  height={700}
+                  className="h-auto w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/30 to-transparent" />
+
+                {/* Credential overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { val: "25+", label: "Years" },
+                      { val: "500+", label: "Cases" },
+                      { val: "25+", label: "Centres" },
+                      { val: "KEM", label: "Trained" },
+                    ].map((s, i) => (
+                      <div
+                        key={i}
+                        className="rounded-lg border border-white/10 bg-midnight-950/70 p-3 text-center backdrop-blur-sm"
+                      >
+                        <div className="text-xl font-display font-bold text-gold-400">
+                          {s.val}
+                        </div>
+                        <div className="text-[10px] font-heading uppercase tracking-widest text-slate-400">
+                          {s.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right — Copy */}
+            <div>
+              <div className="space-y-5 text-sm leading-relaxed text-slate-300 md:text-base">
+                <p>
+                  There are 10,000 &ldquo;certified nutritionists&rdquo; on Instagram who
+                  completed a weekend course and now sell{" "}
+                  <span className="text-danger-400">₹999 meal plans</span>.
+                </p>
+                <p>
+                  <strong className="text-white">Ashwini Gawad is not one of them.</strong>
+                </p>
+                <p>
+                  She is a{" "}
+                  <strong className="text-gold-300">
+                    Board-Certified Clinical Dietitian
+                  </strong>{" "}
+                  with 25+ years of hospital-grade experience. She was the{" "}
+                  <strong className="text-white">
+                    Area Technical Head at VLCC Healthcare
+                  </strong>
+                  , responsible for clinical nutrition protocols across 25+ centres
+                  in Western, Southern and Central India.
+                </p>
+                <p>She has personally managed 500+ clinical cases involving:</p>
+                <ul className="space-y-2 pl-0">
+                  {[
+                    "Uncontrolled Type 2 Diabetes (HbA1c > 8.0)",
+                    "Post-cardiac event dietary rehabilitation",
+                    "Geriatric malnutrition and sarcopenia",
+                    "PCOS with insulin resistance",
+                    "Hypertension with comorbid obesity",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p>
+                  Her training comes from{" "}
+                  <strong className="text-teal-400">KEM Hospital</strong> — one
+                  of India&apos;s most prestigious government medical institutions —
+                  not from a weekend webinar.
+                </p>
+                <div className="mt-6 rounded-xl border border-gold-500/20 bg-gold-500/[0.04] p-5">
+                  <p className="font-heading text-sm font-semibold text-gold-300">
+                    When you hire her, you are not paying for a PDF.
+                  </p>
+                  <p className="mt-1 text-sm text-slate-400">
+                    You are paying for a 25-year clinical brain that coordinates
+                    your parents&apos; entire nutritional ecosystem.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 5 — THE PROTOCOL (How It Works)   */}
+      {/* ═══════════════════════════════════════════ */}
+      <AnimatedSection className="section-padding relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-midnight-950 via-midnight-900 to-midnight-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(5,200,176,0.04),transparent_60%)]" />
+
+        <div className="container-narrow relative z-10">
+          <div className="mb-16 text-center">
+            <span className="badge-teal mb-4 inline-flex">The Concierge Protocol</span>
+            <h2 className="mb-4 font-display text-3xl text-white md:text-4xl lg:text-5xl">
+              The 90-Day Concierge Parental Health Protocol
+            </h2>
+            <p className="mx-auto max-w-2xl text-sm text-slate-400 md:text-base">
+              Not a diet plan. A fully managed clinical nutrition system for your
+              parents — with verified reporting sent directly to you overseas.
+            </p>
+          </div>
+
+          {/* Timeline */}
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-6 top-0 h-full w-px bg-gradient-to-b from-gold-500/40 via-teal-500/40 to-gold-500/40 md:left-1/2" />
+
+            {[
+              {
+                phase: "Phase 1",
+                weeks: "Week 1–2",
+                title: "Clinical Intake & Doctor Coordination",
+                color: "gold",
+                icon: "🏥",
+                items: [
+                  "60-minute video assessment of your parents' full medical history",
+                  "Direct coordination call with their existing Mumbai physician",
+                  "Review of all lab reports, medications, and contraindications",
+                ],
+                deliverable:
+                  "A Clinical Intake Summary with risk stratification",
+              },
+              {
+                phase: "Phase 2",
+                weeks: "Week 2–4",
+                title: "Kitchen Takeover & Cook Training",
+                color: "teal",
+                icon: "👨‍🍳",
+                items: [
+                  "On-site or video training session with the household cook",
+                  "Customized 28-day meal blueprint using existing kitchen ingredients",
+                  "Protein targets, glycemic load management, and medication-meal timing",
+                ],
+                deliverable:
+                  "The Cook's Daily Guide (laminated for the kitchen)",
+              },
+              {
+                phase: "Phase 3",
+                weeks: "Week 4–12",
+                title: "Monitoring & Dashboard Reporting",
+                color: "gold",
+                icon: "📊",
+                items: [
+                  "Daily WhatsApp check-ins for blood sugar / BP readings",
+                  "Weekly plan adjustments based on real data",
+                  "Bi-weekly Clinical Dashboard emailed to you overseas",
+                  "Emergency protocol for glucose spikes or adverse readings",
+                ],
+                deliverable:
+                  "Bi-weekly PDF dashboard with trends, compliance, and clinical recommendations",
+              },
+            ].map((phase, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.15 }}
+                className={`relative mb-12 flex flex-col gap-4 pl-16 md:w-[calc(50%-2rem)] md:pl-0 ${idx % 2 === 0
+                  ? "md:mr-auto md:pr-12 md:text-right"
+                  : "md:ml-auto md:pl-12 md:text-left"
+                  }`}
+              >
+                {/* Timeline dot */}
+                <div
+                  className={`absolute left-4 top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 md:top-1 ${idx % 2 === 0
+                    ? "md:left-auto md:right-[-2.625rem]"
+                    : "md:left-[-2.625rem]"
+                    } ${phase.color === "teal"
+                      ? "border-teal-500 bg-teal-500/20"
+                      : "border-gold-500 bg-gold-500/20"
+                    }`}
+                >
+                  <div
+                    className={`h-2 w-2 rounded-full ${phase.color === "teal" ? "bg-teal-400" : "bg-gold-400"
+                      }`}
+                  />
+                </div>
+
+                {/* Card */}
+                <div
+                  className={`glass-card-elevated p-6 text-left ${phase.color === "teal"
+                    ? "border-teal-500/20"
+                    : "border-gold-500/20"
+                    }`}
+                >
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="text-2xl">{phase.icon}</span>
+                    <div>
+                      <div
+                        className={`text-xs font-heading font-bold uppercase tracking-[0.2em] ${phase.color === "teal"
+                          ? "text-teal-400"
+                          : "text-gold-400"
+                          }`}
+                      >
+                        {phase.phase} — {phase.weeks}
+                      </div>
+                      <h3 className="font-heading text-lg font-bold text-white">
+                        {phase.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <ul className="mb-4 space-y-2">
+                    {phase.items.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-slate-300"
+                      >
+                        <span
+                          className={`mt-1.5 h-1 w-1 shrink-0 rounded-full ${phase.color === "teal"
+                            ? "bg-teal-500"
+                            : "bg-gold-500"
+                            }`}
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div
+                    className={`rounded-lg border p-3 ${phase.color === "teal"
+                      ? "border-teal-500/20 bg-teal-500/[0.05]"
+                      : "border-gold-500/20 bg-gold-500/[0.05]"
+                      }`}
+                  >
+                    <p className="text-xs text-slate-500">You receive:</p>
+                    <p
+                      className={`text-sm font-heading font-semibold ${phase.color === "teal"
+                        ? "text-teal-300"
+                        : "text-gold-300"
+                        }`}
+                    >
+                      {phase.deliverable}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 6 — TESTIMONIALS                   */}
+      {/* ═══════════════════════════════════════════ */}
+      <AnimatedSection className="section-padding relative bg-midnight-950">
+        <div className="container-narrow">
+          <div className="mb-12 text-center">
+            <span className="badge mb-4 inline-flex">Success Stories</span>
+            <h2 className="mb-4 font-display text-3xl text-white md:text-4xl lg:text-5xl">
+              Families Who Stopped Worrying
+            </h2>
+            <p className="mx-auto max-w-2xl text-sm text-slate-400 md:text-base">
+              Names changed for privacy. The clinical outcomes are real and
+              verified.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              {
+                flag: "🇨🇦",
+                location: "Toronto, Canada",
+                condition: "Father — Type 2 Diabetes",
+                result: "HbA1c dropped from 9.1 → 7.3",
+                timeline: "11 weeks",
+                quote:
+                  "I was tired of guessing from 12,000 km away. Within two weeks, Ashwini had coordinated with Papa's endocrinologist and retrained his cook. His numbers started dropping by week 4. I finally sleep at night.",
+              },
+              {
+                flag: "🇬🇧",
+                location: "London, UK",
+                condition: "Mother — Hypertension + Obesity",
+                result: "BP stabilized, cook follows structured plan",
+                timeline: "8 weeks",
+                quote:
+                  "Mum's cook was the biggest blocker. She'd nod and then fry everything in ghee. Ashwini did a 90-minute video session with her and literally transformed the kitchen. Mum's BP readings are now consistent for the first time in years.",
+              },
+              {
+                flag: "🇺🇸",
+                location: "New Jersey, USA",
+                condition: "Father — Post-cardiac, medication conflicts",
+                result: "Cardiologist noted 'significant dietary improvement'",
+                timeline: "12 weeks",
+                quote:
+                  "After Dad's stent, the cardiologist said 'change diet' but never explained how. Ashwini reviewed every medication interaction, built a plan around his actual kitchen, and sent me weekly dashboards. His cardiologist was impressed at the follow-up.",
+              },
+            ].map((testimonial, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.15 }}
+                className="glass-card-elevated flex flex-col p-6"
+              >
+                {/* Header */}
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">{testimonial.flag}</span>
+                    <div>
+                      <p className="text-xs font-heading font-semibold text-white">
+                        {testimonial.location}
+                      </p>
+                      <p className="text-[11px] text-slate-500">
+                        {testimonial.condition}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quote */}
+                <blockquote className="mb-4 flex-1 text-sm leading-relaxed text-slate-300">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </blockquote>
+
+                {/* Result */}
+                <div className="rounded-lg border border-teal-500/20 bg-teal-500/[0.05] p-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs text-slate-500">Clinical Outcome</p>
+                      <p className="text-sm font-heading font-bold text-teal-400">
+                        {testimonial.result}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-500">Timeline</p>
+                      <p className="text-sm font-heading font-semibold text-white">
+                        {testimonial.timeline}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 7 — PRICING                        */}
+      {/* ═══════════════════════════════════════════ */}
+      <AnimatedSection className="section-padding relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-midnight-950 via-midnight-900 to-midnight-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,200,101,0.05),transparent_50%)]" />
+
+        <div className="container-narrow relative z-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="badge mb-6 inline-flex">The Investment</span>
+            <h2 className="mb-2 font-display text-3xl text-white md:text-4xl lg:text-5xl">
+              ₹70,000
+            </h2>
+            <p className="mb-2 text-sm text-slate-500">
+              for the complete 90-Day Protocol
+            </p>
+            <p className="mb-8 text-lg text-gold-300 opacity-80">
+              ≈ $840 CAD &nbsp;|&nbsp; ≈ $630 USD &nbsp;|&nbsp; ≈ £510 GBP
+            </p>
+
+            {/* Value breakdown */}
+            <div className="glass-card-elevated mx-auto max-w-2xl p-8 text-left">
+              <p className="mb-6 text-sm leading-relaxed text-slate-300">
+                That is{" "}
+                <strong className="text-gold-300">₹778/day</strong> for a senior
+                clinical dietitian to personally manage your parents&apos;
+                nutrition, coordinate with their doctors, train their cook, and
+                send you verified clinical reports.
+              </p>
+
+              <div className="mb-6 space-y-3">
+                <p className="text-xs font-heading font-semibold uppercase tracking-[0.15em] text-slate-500">
+                  For Context
+                </p>
+                {[
+                  {
+                    item: "A single ER visit for a diabetic emergency",
+                    cost: "₹25,000 – ₹1,50,000",
+                  },
+                  {
+                    item: "Monthly cost of unmanaged diabetes complications",
+                    cost: "₹15,000+",
+                  },
+                  {
+                    item: "Your peace of mind",
+                    cost: "Priceless",
+                  },
+                ].map((row, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between rounded-lg border border-white/5 bg-white/[0.02] px-4 py-3"
+                  >
+                    <span className="text-sm text-slate-400">{row.item}</span>
+                    <span
+                      className={`text-sm font-heading font-bold ${i === 2 ? "text-gold-400" : "text-danger-400"
+                        }`}
+                    >
+                      {row.cost}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-lg border border-gold-500/20 bg-gold-500/[0.04] p-4 text-center">
+                <p className="text-sm text-slate-300">
+                  This is not a subscription. It is a{" "}
+                  <strong className="text-white">
+                    90-day clinical engagement with a defined outcome.
+                  </strong>
                 </p>
               </div>
             </div>
           </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ═══════════════════════════════════════════ */}
+      {/*  SECTION 8 — CTA (Application Only)         */}
+      {/* ═══════════════════════════════════════════ */}
+      <section id="apply" className="section-padding relative overflow-hidden">
+        <div className="absolute inset-0 bg-midnight-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(232,200,101,0.08),transparent_60%)]" />
+        {/* Top gold line */}
+        <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-gold-500/50 to-transparent" />
+
+        <div className="container-narrow relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <span className="badge mb-6 inline-flex">Limited Enrollment</span>
+            <h2 className="mb-6 font-display text-3xl text-white md:text-4xl lg:text-5xl">
+              Apply for a Clinical Assessment Call
+            </h2>
+
+            <div className="mb-8 space-y-4 text-sm leading-relaxed text-slate-400 md:text-base">
+              <p>
+                We accept a maximum of{" "}
+                <strong className="text-gold-300">
+                  8 new families per quarter
+                </strong>{" "}
+                to ensure clinical quality is never compromised.
+              </p>
+              <p>
+                This is not a sales call. It is a{" "}
+                <strong className="text-white">
+                  15-minute clinical screening
+                </strong>{" "}
+                where Ashwini will review your parents&apos; latest lab reports
+                and determine if the Protocol is appropriate for their condition.
+              </p>
+              <p className="text-slate-500">
+                If we are not the right fit, we will tell you directly and refer
+                you to the appropriate specialist — free of charge.
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mb-6">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                id="final-cta"
+                className="group inline-flex items-center gap-3 rounded-full px-10 py-5 font-heading text-base font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, #e8c865, #d4a229, #e8c865)",
+                  color: "#0c0c1a",
+                  boxShadow: "0 0 40px rgba(232,200,101,0.35)",
+                }}
+              >
+                Apply for Your Clinical Assessment
+                <svg
+                  className="h-5 w-5 transition-transform group-hover:translate-x-1"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  fill="none"
+                >
+                  <path
+                    d="M5 12h14M13 6l6 6-6 6"
+                    strokeWidth={2.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+            </div>
+
+            <p className="mb-12 text-xs text-slate-600">
+              Limited to 8 families per quarter &nbsp;•&nbsp; No obligation
+              &nbsp;•&nbsp; No payment required to apply
+            </p>
+
+            {/* Trust footer */}
+            <div className="flex flex-wrap items-center justify-center gap-4 border-t border-white/5 pt-8">
+              <CredentialBadge icon="🏥" text="KEM Hospital Trained" />
+              <CredentialBadge icon="🏢" text="Former VLCC Area Head" />
+              <CredentialBadge icon="📊" text="500+ Clinical Cases" />
+              <CredentialBadge icon="🇮🇳" text="Mumbai, India" />
+            </div>
+
+            {/* Copyright */}
+            <p className="mt-8 text-[11px] text-slate-700">
+              © {new Date().getFullYear()} Dt. Ashwini Gawad. All rights reserved.
+              Clinical Dietitian, Mumbai.
+            </p>
+          </motion.div>
         </div>
       </section>
     </div>

@@ -1,13 +1,27 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Dietitian Ashwini Gawad | Clinical Nutrition & Wellness",
+  title:
+    "90-Day Concierge Parental Health Protocol | Dt. Ashwini Gawad — Clinical Dietitian, Mumbai",
   description:
-    "Clinical diet & nutrition counselling in Mumbai for diabetes, cardiac care, PCOS, obesity, geriatric nutrition and family meal planning.",
+    "Your parents are in Mumbai. Their diabetes is unmanaged. The 90-Day Concierge Protocol: a senior clinical dietitian coordinates with their doctors, trains their cook, and sends you bi-weekly health dashboards. For NRI families in Canada, USA & UK.",
+  keywords: [
+    "NRI parent health",
+    "Mumbai dietitian",
+    "concierge nutrition",
+    "elderly diabetes management India",
+    "clinical dietitian Mumbai",
+    "parental health protocol",
+    "NRI healthcare India",
+  ],
+  openGraph: {
+    title: "90-Day Concierge Parental Health Protocol | Dt. Ashwini Gawad",
+    description:
+      "A 25-year veteran clinical dietitian who coordinates with your parents' Mumbai doctors, trains their cook, and sends you a bi-weekly clinical dashboard.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -16,13 +30,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-cream text-warmGray-800 font-body antialiased transition-colors duration-300 dark:bg-warmGray-900 dark:text-warmGray-50">
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1 pt-16">{children}</main>
-          <Footer />
-        </div>
+    <html lang="en">
+      <body className="noise-bg min-h-screen bg-midnight-950 font-body text-slate-200 antialiased">
+        <main>{children}</main>
       </body>
     </html>
   );
