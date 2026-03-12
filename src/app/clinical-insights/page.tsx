@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/blog";
+import { getPublishedNotionPosts, NotionPost } from "@/lib/notion";
 import { format } from "date-fns";
 import NextImage from "next/image";
 
@@ -8,8 +8,9 @@ export const metadata = {
   description: "Read clinical insights, case studies, and nutritional protocols from 25-yr veteran Dt. Ashwini Gawad.",
 };
 
-export default function InsightsIndexPage() {
-  const posts = getAllPosts();
+export default async function InsightsIndexPage() {
+  // Fetch from the new Notion API bridge
+  const posts: NotionPost[] = await getPublishedNotionPosts();
 
   return (
     <div className="relative min-h-screen bg-midnight-950">
@@ -55,17 +56,22 @@ export default function InsightsIndexPage() {
             Direct observations, nutritional interventions, and case studies
             from 25 years of managing severe clinical conditions across India.
           </p>
+          
+          {posts.length === 0 && (
+             <div className="mt-8 rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-200">
+               <p><strong>Setup Required:</strong> The Notion API is connected, but no published articles were found. Please add the `NOTION_DATABASE_ID` to your environment variables to fetch real articles.</p>
+             </div>
+          )}
         </div>
 
         {/* Posts Grid */}
         <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post, idx) => (
             <Link
-              key={post.slug}
+              key={post.id}
               href={`/clinical-insights/${post.slug}`}
               className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-midnight-900/50 transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/30 hover:shadow-[0_15px_40px_-10px_rgba(232,200,101,0.1)]"
             >
-              {/* Optional Cover Image Space */}
               {post.coverImage ? (
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-midnight-950">
                    <NextImage
@@ -79,7 +85,6 @@ export default function InsightsIndexPage() {
               ) : (
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-midnight-800 to-midnight-950">
                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(5,200,176,0.1),transparent_70%)]" />
-                   {/* Decorative monogram icon */}
                    <div className="absolute inset-0 flex items-center justify-center opacity-20 transition-transform duration-500 group-hover:scale-110">
                      <span className="font-display text-8xl text-gold-500">A</span>
                    </div>
@@ -89,11 +94,11 @@ export default function InsightsIndexPage() {
               <div className="flex flex-1 flex-col p-6">
                 <div className="mb-3 flex items-center gap-3">
                   <span className="text-xs font-heading font-semibold uppercase tracking-wider text-teal-400">
-                    {post.category}
+                    {post.category || "Insight"}
                   </span>
                   <span className="h-1 w-1 rounded-full bg-slate-600" />
                   <time className="text-xs text-slate-500">
-                    {format(new Date(post.date), "MMM d, yyyy")}
+                    {post.date ? format(new Date(post.date), "MMM d, yyyy") : "Recent"}
                   </time>
                 </div>
                 
@@ -114,13 +119,6 @@ export default function InsightsIndexPage() {
               </div>
             </Link>
           ))}
-
-          {/* Fallback if no posts */}
-          {posts.length === 0 && (
-            <div className="col-span-full py-20 text-center">
-              <p className="text-slate-500">No clinical insights published yet.</p>
-            </div>
-          )}
         </div>
       </main>
     </div>

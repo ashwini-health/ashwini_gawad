@@ -1,35 +1,40 @@
-import { getPostBySlug, getPostSlugs } from "@/lib/blog";
+import { getNotionPostBySlug, getPublishedNotionPosts } from "@/lib/notion";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
+// A simple custom block renderer as a fallback for the Notion API
+// For production, a far more robust renderer should be used (e.g., react-notion-x)
+import { renderBlock } from "@/components/NotionRenderer";
 
-export async function generateStaticParams() {
-  const slugs = getPostSlugs();
-  return slugs.map((slug) => ({
-    slug: slug.replace(/\.mdx?$/, ""),
-  }));
-}
+// Fallback generateStaticParams depending on API connectivity
+// export async function generateStaticParams() {
+//   const posts = await getPublishedNotionPosts();
+//   return posts.map((post) => ({
+//     slug: post.slug,
+//   }));
+// }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
-  if (!post) return { title: "Not Found" };
+  const postData = await getNotionPostBySlug(params.slug);
+  if (!postData) return { title: "Not Found" };
+  
   return {
-    title: `${post.title} | Dt. Ashwini Gawad`,
-    description: post.excerpt,
+    title: `${postData.metadata.title} | Dt. Ashwini Gawad`,
+    description: postData.metadata.excerpt,
   };
 }
 
-export default function PostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export default async function NotionPostPage({ params }: { params: { slug: string } }) {
+  const postData = await getNotionPostBySlug(params.slug);
 
-  if (!post) {
-    notFound();
+  if (!postData) {
+    notFound(); 
   }
+
+  const { metadata, blocks } = postData;
 
   return (
     <div className="relative min-h-screen bg-midnight-950">
-      {/* Background Ambience */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(232,200,101,0.04),transparent_50%)]" />
 
       {/* Header */}
@@ -51,16 +56,16 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         <header className="mb-16">
           <div className="mb-6 flex items-center gap-3">
              <span className="rounded-full bg-teal-500/10 px-3 py-1 text-xs font-heading font-bold uppercase tracking-wider text-teal-400">
-                {post.category}
+                {metadata.category}
              </span>
              <span className="h-1 w-1 rounded-full bg-slate-600" />
              <time className="text-sm font-heading text-slate-400">
-               {format(new Date(post.date), "MMMM d, yyyy")}
+               {metadata.date ? format(new Date(metadata.date), "MMMM d, yyyy") : ""}
              </time>
           </div>
 
           <h1 className="mb-8 font-display text-3xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
-            {post.title}
+            {metadata.title}
           </h1>
 
           <div className="flex items-center gap-4 border-t border-white/10 pt-6">
@@ -74,9 +79,11 @@ export default function PostPage({ params }: { params: { slug: string } }) {
           </div>
         </header>
 
-        {/* Article Content */}
+        {/* Notion Article Content */}
         <article className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-headings:text-gold-200 prose-a:text-teal-400 hover:prose-a:text-teal-300 prose-p:text-slate-300 prose-li:text-slate-300 prose-strong:text-white">
-          <ReactMarkdown>{post.content}</ReactMarkdown>
+          {blocks.map((block: any) => (
+             <div key={block.id}>{renderBlock(block)}</div>
+          ))}
         </article>
 
         {/* The "Reverse Funnel" Call to Action */}
