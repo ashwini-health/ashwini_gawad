@@ -1,4 +1,10 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
 
 export type Database = {
   public: {
@@ -55,6 +61,7 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       lead_intakes: {
         Row: {
@@ -114,6 +121,7 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       lead_consents: {
         Row: {
@@ -152,6 +160,7 @@ export type Database = {
           user_agent?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       lead_events: {
         Row: {
@@ -178,7 +187,11 @@ export type Database = {
           metadata?: Json;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
+    Views: {};
+    Functions: {};
+    CompositeTypes: {};
   };
 };
