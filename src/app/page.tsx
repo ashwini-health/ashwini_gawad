@@ -139,19 +139,19 @@ export default function FunnelPage() {
               </div>
 
               <h1 className="mb-6 font-display text-4xl leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-[4.2rem]">
-                Your Parents Are in Mumbai.{" "}
+                Your parents are in Mumbai.{" "}
                 <br className="hidden sm:block" />
-                Their Diabetes Is{" "}
-                <span className="text-gradient-gold">Unmanaged.</span>
+                Their health is a{" "}
+                <span className="text-gradient-gold">concern.</span>
                 <br className="hidden sm:block" />
                 <span className="text-slate-400">
-                  And You&apos;re 12,000 km Away.
+                  And you're feeling helpless at 12,000 km away.
                 </span>
               </h1>
 
               <p className="mb-8 max-w-2xl text-base leading-relaxed text-slate-400 md:text-lg">
                 The <strong className="text-white">90-Day Concierge Parental Health Protocol</strong> — built by a{" "}
-                <strong className="text-gold-300">25-year veteran Clinical Dietitian</strong> who
+                <strong className="text-gold-300">clinical dietitian with 25+ years experience</strong> who
                 coordinates with their Mumbai doctors, trains their household
                 cook, and sends you a bi-weekly clinical dashboard.{" "}
                 <em className="text-teal-400">So you stop worrying at 3 AM.</em>
@@ -194,7 +194,7 @@ export default function FunnelPage() {
               <div className="flex flex-wrap gap-2">
                 <CredentialBadge icon="🏥" text="KEM Hospital Trained" />
                 <CredentialBadge icon="🏢" text="Former VLCC Area Head" />
-                <CredentialBadge icon="📊" text="500+ Clinical Cases" />
+                <CredentialBadge icon="📊" text="1000+ Clinical Cases" />
               </div>
             </motion.div>
 
@@ -425,7 +425,7 @@ export default function FunnelPage() {
                   <div className="grid grid-cols-2 gap-3">
                     {[
                       { val: "25+", label: "Years" },
-                      { val: "500+", label: "Cases" },
+                      { val: "1000+", label: "Cases" },
                       { val: "25+", label: "Centres" },
                       { val: "KEM", label: "Trained" },
                     ].map((s, i) => (
@@ -458,18 +458,10 @@ export default function FunnelPage() {
                   <strong className="text-white">Ashwini Gawad is not one of them.</strong>
                 </p>
                 <p>
-                  She is a{" "}
-                  <strong className="text-gold-300">
-                    Board-Certified Clinical Dietitian
-                  </strong>{" "}
-                  with 25+ years of hospital-grade experience. She was the{" "}
-                  <strong className="text-white">
-                    Area Technical Head at VLCC Healthcare
-                  </strong>
-                  , responsible for clinical nutrition protocols across 25+ centres
-                  in Western, Southern and Central India.
+                  She has completed her <strong className="text-gold-300">Masters in Dietetics</strong>, and with
+                  <strong className="text-gold-300"> 25+ years of valuable experience</strong> makes her an empathetic and effective gatekeeper of evidence-based counselling.
                 </p>
-                <p>She has personally managed 500+ clinical cases involving:</p>
+                <p>She has personally managed 1000+ clinical cases involving:</p>
                 <ul className="space-y-2 pl-0">
                   {[
                     "Uncontrolled Type 2 Diabetes (HbA1c > 8.0)",
@@ -485,10 +477,11 @@ export default function FunnelPage() {
                   ))}
                 </ul>
                 <p>
-                  Her training comes from{" "}
-                  <strong className="text-teal-400">KEM Hospital</strong> — one
-                  of India&apos;s most prestigious government medical institutions —
-                  not from a weekend webinar.
+                  Her profound expertise stems from training at <strong className="text-teal-400">KEM Hospital</strong>—one of India's most prestigious institutions—coupled with extensive practical experience at <strong className="text-white">Talwalkars Fitness Ltd</strong> and as Area Technical Head for <strong className="text-white">VLCC Healthcare</strong> across 25+ centers.
+                </p>
+                <p>
+                  This unique blend of rigorous medical training and the only IMA-certified wellness programme provides her with a strong foothold and minute know-how for effective counselling. 
+                  <em className="text-gold-300"> It's not just textbook knowledge, but practical experience of enriching clients' lives.</em>
                 </p>
                 <div className="mt-6 rounded-xl border border-gold-500/20 bg-gold-500/[0.04] p-5">
                   <p className="font-heading text-sm font-semibold text-gold-300">
@@ -773,21 +766,19 @@ export default function FunnelPage() {
           <div className="mx-auto max-w-3xl text-center">
             <span className="badge mb-6 inline-flex">The Investment</span>
             <h2 className="mb-2 font-display text-3xl text-white md:text-4xl lg:text-5xl">
-              ₹70,000
+              ₹XX,000/-
             </h2>
             <p className="mb-2 text-sm text-slate-500">
               for the complete 90-Day Protocol
             </p>
             <p className="mb-8 text-lg text-gold-300 opacity-80">
-              ≈ $840 CAD &nbsp;|&nbsp; ≈ $630 USD &nbsp;|&nbsp; ≈ £510 GBP
+              Pricing localized to your region upon application
             </p>
 
             {/* Value breakdown */}
             <div className="glass-card-elevated mx-auto max-w-2xl p-8 text-left">
               <p className="mb-6 text-sm leading-relaxed text-slate-300">
-                That is{" "}
-                <strong className="text-gold-300">₹778/day</strong> for a senior
-                clinical dietitian to personally manage your parents&apos;
+                You are securing a senior clinical dietitian to personally manage your parents&apos;
                 nutrition, coordinate with their doctors, train their cook, and
                 send you verified clinical reports.
               </p>
@@ -921,7 +912,7 @@ export default function FunnelPage() {
             <div className="flex flex-wrap items-center justify-center gap-4 border-t border-white/5 pt-8">
               <CredentialBadge icon="🏥" text="KEM Hospital Trained" />
               <CredentialBadge icon="🏢" text="Former VLCC Area Head" />
-              <CredentialBadge icon="📊" text="500+ Clinical Cases" />
+              <CredentialBadge icon="📊" text="1000+ Clinical Cases" />
               <CredentialBadge icon="🇮🇳" text="Mumbai, India" />
             </div>
 
