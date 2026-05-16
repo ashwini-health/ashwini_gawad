@@ -34,11 +34,11 @@ export default async function NotionPostPage({ params }: { params: { slug: strin
   const { metadata, blocks } = postData;
 
   return (
-    <div className="relative min-h-screen bg-midnight-950">
+    <div className="relative min-h-screen bg-midnight-950 pt-16">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(232,200,101,0.04),transparent_50%)]" />
 
-      {/* Header */}
-      <header className="relative z-20 mx-auto flex max-w-4xl items-center justify-between px-6 py-6 md:px-8">
+      {/* Back link */}
+      <header className="relative z-20 mx-auto flex max-w-4xl items-center justify-between px-6 py-4 md:px-8">
         <Link
           href="/clinical-insights"
           className="group flex items-center gap-2 text-sm font-heading font-semibold text-slate-400 transition-colors hover:text-gold-400"

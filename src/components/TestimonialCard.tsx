@@ -1,4 +1,3 @@
-// src/components/TestimonialCard.tsx
 import React from "react";
 
 interface TestimonialCardProps {
@@ -8,44 +7,27 @@ interface TestimonialCardProps {
   result?: string;
 }
 
-export function TestimonialCard({
-  name,
-  context,
-  quote,
-  result,
-}: TestimonialCardProps) {
+export function TestimonialCard({ name, context, quote, result }: TestimonialCardProps) {
   const initial = (name || "").trim().charAt(0).toUpperCase() || "?";
 
   return (
-    <article className="relative h-full rounded-3xl border border-warmGray-200 bg-white p-8 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl dark:border-warmGray-700 dark:bg-warmGray-900">
-      <div
-        className="mb-4 text-6xl font-serif leading-none text-sage-200 dark:text-sage-100/20"
-        aria-hidden="true"
-      >
-        &ldquo;
-      </div>
-      <p className="mb-6 text-sm text-warmGray-700 leading-relaxed dark:text-warmGray-100">
-        {quote}
-      </p>
+    <article className="glass-card-elevated flex flex-col p-8 transition-all duration-300 hover:-translate-y-1">
+      <div className="mb-4 font-display text-5xl leading-none text-gold-500/30">&ldquo;</div>
+      <p className="mb-6 flex-1 text-sm leading-relaxed text-slate-300">{quote}</p>
       {result && (
-        <div className="mb-6 rounded-xl border border-sage-200 bg-sage-50 p-4 text-sm text-sage-700 dark:border-sage-400/40 dark:bg-sage-900/30 dark:text-sage-100">
+        <div className="mb-6 rounded-xl border border-teal-500/20 bg-teal-500/5 p-4 text-sm text-teal-300">
           {result}
         </div>
       )}
-      <div className="flex items-center gap-4 border-t border-warmGray-200 pt-5 dark:border-warmGray-700">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-sage-400 text-lg font-heading font-bold text-white">
+      <div className="flex items-center gap-4 border-t border-white/5 pt-5">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-gold-400 to-gold-600 text-sm font-heading font-black text-midnight-950">
           {initial}
         </div>
         <div>
-          <p className="font-heading text-sm font-semibold text-warmGray-900 dark:text-warmGray-50">
-            {name}
-          </p>
-          <p className="text-xs text-warmGray-500 dark:text-warmGray-300">
-            {context}
-          </p>
+          <p className="font-heading text-sm font-semibold text-white">{name}</p>
+          <p className="text-xs text-slate-500">{context}</p>
         </div>
       </div>
-      <div className="pointer-events-none absolute -top-4 -right-4 h-16 w-16 rounded-full bg-sage-100/60 blur-2xl dark:bg-sage-400/20" />
     </article>
   );
 }

@@ -1,6 +1,7 @@
-// src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title:
@@ -32,7 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="noise-bg min-h-screen bg-midnight-950 font-body text-slate-200 antialiased">
+        <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

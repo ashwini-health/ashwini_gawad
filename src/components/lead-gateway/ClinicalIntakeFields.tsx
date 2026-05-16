@@ -1,79 +1,83 @@
 import React from "react";
 
+const fieldClass = "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200 placeholder-slate-500 outline-none transition-all focus:border-gold-500/40 focus:bg-white/8 focus:ring-1 focus:ring-gold-500/20";
+const labelClass = "mb-2 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-slate-500";
+
 export function ClinicalIntakeFields() {
   return (
     <div className="space-y-5">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-            Full Name
-          </label>
-          <input id="name" name="name" required className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+          <label htmlFor="name" className={labelClass}>Full Name</label>
+          <input id="name" name="name" required className={fieldClass} placeholder="Your name" />
         </div>
         <div>
-          <label htmlFor="phone" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-            Phone
-          </label>
-          <input id="phone" name="phone" required className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+          <label htmlFor="phone" className={labelClass}>Phone / WhatsApp</label>
+          <input id="phone" name="phone" required className={fieldClass} placeholder="+91 or international" />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label htmlFor="email" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-            Email (optional)
-          </label>
-          <input id="email" name="email" type="email" className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+          <label htmlFor="email" className={labelClass}>Email (optional)</label>
+          <input id="email" name="email" type="email" className={fieldClass} placeholder="you@example.com" />
         </div>
         <div>
-          <label htmlFor="nriCountry" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-            NRI Country (optional)
-          </label>
-          <input id="nriCountry" name="nriCountry" className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+          <label htmlFor="nriCountry" className={labelClass}>Your Country (if NRI)</label>
+          <input id="nriCountry" name="nriCountry" className={fieldClass} placeholder="Canada, USA, UK…" />
         </div>
       </div>
 
       <div>
-        <label htmlFor="parentsCity" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-          Parents&apos; City
-        </label>
-        <input id="parentsCity" name="parentsCity" required className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+        <label htmlFor="parentsCity" className={labelClass}>Parents&apos; City</label>
+        <input id="parentsCity" name="parentsCity" required className={fieldClass} placeholder="Mumbai, Pune…" />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label htmlFor="parentAge1" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-            Parent Age 1
-          </label>
-          <input id="parentAge1" name="parentAge1" type="number" min={1} max={120} required className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+          <label htmlFor="parentAge1" className={labelClass}>Parent 1 Age</label>
+          <input id="parentAge1" name="parentAge1" type="number" min={1} max={120} required className={fieldClass} placeholder="e.g. 68" />
         </div>
         <div>
-          <label htmlFor="parentAge2" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-            Parent Age 2
-          </label>
-          <input id="parentAge2" name="parentAge2" type="number" min={1} max={120} required className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+          <label htmlFor="parentAge2" className={labelClass}>Parent 2 Age (optional)</label>
+          <input id="parentAge2" name="parentAge2" type="number" min={1} max={120} className={fieldClass} placeholder="e.g. 65" />
         </div>
       </div>
 
       <div>
-        <label htmlFor="primaryAilments" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-          Primary Ailments (comma-separated)
-        </label>
-        <textarea id="primaryAilments" name="primaryAilments" required rows={3} className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+        <label htmlFor="primaryAilments" className={labelClass}>Primary Ailments</label>
+        <textarea
+          id="primaryAilments"
+          name="primaryAilments"
+          required
+          rows={3}
+          className={fieldClass}
+          placeholder="e.g. Type 2 diabetes, hypertension, arthritis"
+        />
       </div>
 
       <div>
-        <label htmlFor="currentMedications" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-          Current Medications
-        </label>
-        <textarea id="currentMedications" name="currentMedications" required rows={3} className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+        <label htmlFor="currentMedications" className={labelClass}>Current Medications</label>
+        <textarea
+          id="currentMedications"
+          name="currentMedications"
+          required
+          rows={3}
+          className={fieldClass}
+          placeholder="List medications and dosages if known"
+        />
       </div>
 
       <div>
-        <label htmlFor="medicalConditionSummary" className="mb-1 block text-xs font-heading font-semibold uppercase tracking-[0.16em] text-warmGray-600 dark:text-warmGray-300">
-          Medical Condition Summary
-        </label>
-        <textarea id="medicalConditionSummary" name="medicalConditionSummary" required rows={4} className="w-full rounded-xl border border-warmGray-300 bg-white px-3 py-2 text-sm text-warmGray-900" />
+        <label htmlFor="medicalConditionSummary" className={labelClass}>Brief Health Summary</label>
+        <textarea
+          id="medicalConditionSummary"
+          name="medicalConditionSummary"
+          required
+          rows={4}
+          className={fieldClass}
+          placeholder="Describe your parents' current health situation and what you'd like to achieve"
+        />
       </div>
     </div>
   );

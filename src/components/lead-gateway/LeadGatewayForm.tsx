@@ -15,19 +15,23 @@ export function LeadGatewayForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-5 rounded-3xl border border-warmGray-200 bg-white p-6 shadow-md dark:border-warmGray-700 dark:bg-warmGray-900">
+    <form action={formAction} className="glass-card-elevated space-y-6 p-8">
       <input type="hidden" name="sourcePage" value="/book-consultation" />
       <ClinicalIntakeFields />
       <MedicalDisclaimer />
 
-      {state.error ? <p className="text-sm text-red-600 dark:text-red-400">{state.error}</p> : null}
+      {state.error ? (
+        <p className="rounded-xl border border-danger-500/30 bg-danger-500/10 px-4 py-3 text-sm text-danger-400">
+          {state.error}
+        </p>
+      ) : null}
 
       <button
         type="submit"
         disabled={pending}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-terracotta-500 to-terracotta-600 px-6 py-3.5 font-heading text-sm font-semibold text-white shadow-xl transition-all hover:scale-105 hover:shadow-2xl disabled:cursor-not-allowed disabled:opacity-70"
+        className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-gold-500 to-gold-400 px-6 py-4 font-heading text-sm font-semibold text-midnight-950 shadow-xl transition-all hover:shadow-gold-500/20 hover:shadow-2xl disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {pending ? "Submitting intake..." : "Submit Clinical Intake"}
+        {pending ? "Submitting intake…" : "Submit Clinical Intake"}
       </button>
     </form>
   );
