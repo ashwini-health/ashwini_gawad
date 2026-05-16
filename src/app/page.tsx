@@ -89,7 +89,7 @@ export default function HomePage() {
                 transition={{ duration: 0.65, delay: 0.2 }}
                 className="mb-10 max-w-lg text-lg leading-relaxed text-slate-400"
               >
-                Dt. Ashwini Gawad — MSc Dietetics, KEM Hospital trained, 25+ years clinical — manages your family's nutrition end-to-end.
+                Dt. Ashwini Gawad — MSc Dietetics, KEM Hospital trained, 25+ years clinical — manages your family&apos;s nutrition end-to-end.
                 Coordinates with doctors, trains the household cook, and sends you verified health dashboards.
               </motion.p>
 
@@ -251,7 +251,7 @@ export default function HomePage() {
               <span className="mb-2 block text-xs font-heading font-bold uppercase tracking-[0.2em] text-teal-400">Phase 2 · Week 2–4</span>
               <h3 className="mb-3 font-display text-xl text-white">Kitchen Training</h3>
               <p className="text-sm leading-relaxed text-slate-400">
-                On-site or video session with the household cook. 28-day meal blueprint built around what's already in their kitchen.
+                On-site or video session with the household cook. 28-day meal blueprint built around what&apos;s already in their kitchen.
               </p>
             </div>
           </Reveal>
@@ -333,7 +333,7 @@ export default function HomePage() {
               <div className="space-y-4 text-base leading-relaxed text-slate-400">
                 <p>
                   Ashwini Gawad holds a <strong className="text-white">Masters in Dietetics</strong> and spent her early career at
-                  <strong className="text-gold-300"> KEM Hospital</strong>, one of India's most rigorous clinical institutions.
+                  <strong className="text-gold-300"> KEM Hospital</strong>, one of India&apos;s most rigorous clinical institutions.
                 </p>
                 <p>
                   She served as <strong className="text-white">Area Technical Head for VLCC Healthcare</strong> across 25+ centres — managing clinical protocols, staff training, and outcome reporting at scale.
@@ -356,7 +356,7 @@ export default function HomePage() {
               </div>
               <div className="mt-8 rounded-xl border border-gold-500/20 bg-gold-500/5 p-5">
                 <p className="font-heading text-sm font-semibold text-gold-300">
-                  "You're not getting a generic meal plan. You're getting a clinical brain that has managed 1,000+ cases — now managing yours."
+                  &ldquo;You&apos;re not getting a generic meal plan. You&apos;re getting a clinical brain that has managed 1,000+ cases — now managing yours.&rdquo;
                 </p>
               </div>
             </Reveal>
@@ -503,7 +503,7 @@ export default function HomePage() {
               <span className="text-gradient-gold"> nutrition management?</span>
             </h2>
             <p className="mx-auto mb-10 max-w-xl text-lg text-slate-400">
-              Book a 15-minute clinical assessment call. Ashwini reviews your family's case and tells you directly whether the programme is the right fit.
+              Book a 15-minute clinical assessment call. Ashwini reviews your family&apos;s case and tells you directly whether the programme is the right fit.
             </p>
 
             <a

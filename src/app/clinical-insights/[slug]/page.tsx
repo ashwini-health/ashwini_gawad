@@ -1,4 +1,4 @@
-import { getNotionPostBySlug, getPublishedNotionPosts } from "@/lib/notion";
+import { getNotionPostBySlug } from "@/lib/notion";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import Link from "next/link";
@@ -81,9 +81,11 @@ export default async function NotionPostPage({ params }: { params: { slug: strin
 
         {/* Notion Article Content */}
         <article className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-headings:text-gold-200 prose-a:text-teal-400 hover:prose-a:text-teal-300 prose-p:text-slate-300 prose-li:text-slate-300 prose-strong:text-white">
-          {blocks.map((block: any) => (
+          {/* eslint-disable @typescript-eslint/no-explicit-any */}
+          {(blocks as any[]).map((block: any) => (
              <div key={block.id}>{renderBlock(block)}</div>
           ))}
+          {/* eslint-enable @typescript-eslint/no-explicit-any */}
         </article>
 
         {/* The "Reverse Funnel" Call to Action */}
@@ -95,7 +97,7 @@ export default async function NotionPostPage({ params }: { params: { slug: strin
              <h3 className="font-display text-2xl text-white md:text-3xl">Ready for a Clinical Intervention?</h3>
           </div>
           <p className="mb-8 text-base leading-relaxed text-slate-400">
-            If your parents' health parameters look similar to a case study and their current plan isn't working, it's time to escalate their care. Apply for the 90-Day Concierge Protocol.
+            If your parents&apos; health parameters look similar to a case study and their current plan isn&apos;t working, it&apos;s time to escalate their care. Apply for the 90-Day Concierge Protocol.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link
