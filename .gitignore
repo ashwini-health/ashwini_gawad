@@ -1,0 +1,45 @@
+# Environment files — NEVER commit these
+.env
+.env.local
+.env.production
+server/.env
+web/.env.local
+mobile/server/.env
+
+# Dependencies
+node_modules/
+web/node_modules/
+mobile/node_modules/
+mobile/server/node_modules/
+
+# Build outputs
+.next/
+web/.next/
+mobile/.expo/
+mobile/dist/
+android/
+ios/
+
+# EAS / Expo
+mobile/.expo-shared/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+google-play-key.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.cursor/
+*.swp
+
+# ChromaDB / vector store
+web/chroma_store/
+mobile/server/chroma_store/

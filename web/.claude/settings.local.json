@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(claude-api)",
+      "Bash(npx:*)",
+      "Bash(mkdir -p /tmp/nextapp)",
+      "Read(//tmp/**)",
+      "Bash(cp -r . /c/Users/theof/ashu_agent/)",
+      "Bash(rsync -av --exclude='.claude' --exclude='.git' /tmp/nextapp/ /c/Users/theof/ashu_agent/)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('Next:', d['dependencies'].get\\('next','?'\\)\\); print\\('React:', d['dependencies'].get\\('react','?'\\)\\)\")",
+      "Bash(cp /tmp/nextapp/package.json /c/Users/theof/ashu_agent/)",
+      "Bash(cp /tmp/nextapp/package-lock.json /c/Users/theof/ashu_agent/)",
+      "Bash(cp /tmp/nextapp/tsconfig.json /c/Users/theof/ashu_agent/)",
+      "Bash(cp /tmp/nextapp/next.config.mjs /c/Users/theof/ashu_agent/)",
+      "Bash(cp /tmp/nextapp/next-env.d.ts /c/Users/theof/ashu_agent/)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
