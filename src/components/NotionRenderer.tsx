@@ -1,10 +1,8 @@
 import React from "react";
-import NextImage from "next/image";
 
-/**
- * A simple custom block renderer for Notion API data.
- * This converts Notion's JSON blocks into React components with Tailwind styling.
- */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Notion block objects are deeply nested with complex union types — typed as `any` intentionally.
+
 export function renderBlock(block: any) {
   const { type, id } = block;
   const value = block[type];

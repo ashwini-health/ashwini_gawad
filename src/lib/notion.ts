@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Notion API response shapes are deeply nested union types — typed as `any` at the boundary.
 import { Client } from "@notionhq/client";
 
 let _client: Client | null = null;

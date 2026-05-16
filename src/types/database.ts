@@ -190,8 +190,8 @@ export type Database = {
         Relationships: [];
       };
     };
-    Views: {};
-    Functions: {};
-    CompositeTypes: {};
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 };
