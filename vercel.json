@@ -1,4 +1,9 @@
 {
   "version": 2,
-  "comment": "Vercel monorepo — set Root Directory to 'web' in Vercel Project Settings > General > Root Directory"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "cd web && npm install",
+  "buildCommand": "cd web && npm run build",
+  "outputDirectory": "web/.next",
+  "devCommand": "cd web && npm run dev"
 }
