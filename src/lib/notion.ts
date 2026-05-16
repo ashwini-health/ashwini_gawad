@@ -39,7 +39,7 @@ export async function getPublishedNotionPosts(): Promise<NotionPost[]> {
       database_id: DATABASE_ID,
       filter: {
         property: "Status",
-        status: {
+        select: {
           equals: "Published",
         },
       },
