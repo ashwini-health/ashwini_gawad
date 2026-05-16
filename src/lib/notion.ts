@@ -1,10 +1,13 @@
 import { Client } from "@notionhq/client";
 
-// Initialize the Notion Client
-// Note: In production, these should be securely stored in .env.local
-export const notion = new Client({
-  auth: process.env.NOTION_API_KEY,
-}) as any;
+let _client: Client | null = null;
+
+function getNotionClient(): Client {
+  if (!_client) {
+    _client = new Client({ auth: process.env.NOTION_API_KEY });
+  }
+  return _client;
+}
 
 export const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
@@ -29,6 +32,7 @@ export async function getPublishedNotionPosts(): Promise<NotionPost[]> {
   }
 
   try {
+    const notion = getNotionClient();
     const response = await notion.databases.query({
       database_id: DATABASE_ID,
       filter: {
@@ -69,6 +73,7 @@ export async function getNotionPostBySlug(slug: string) {
   if (!DATABASE_ID) return null;
 
   try {
+    const notion = getNotionClient();
     const response = await notion.databases.query({
       database_id: DATABASE_ID,
       filter: {
