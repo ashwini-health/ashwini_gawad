@@ -4,7 +4,6 @@ import { premiumEnquirySchema, PREMIUM_CONSENT_TEXT, PREMIUM_CONSENT_VERSION } f
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export type PremiumEnquiryState = { ok: boolean; error?: string };
-export const initialPremiumEnquiryState: PremiumEnquiryState = { ok: false };
 
 export async function submitPremiumEnquiry(
   _previousState: PremiumEnquiryState,
