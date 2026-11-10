@@ -8,6 +8,11 @@ export const metadata: Metadata = {
     "Explore personalised, founder-led nutrition guidance for individuals and households in India. Six-month private advisory proposals start at ₹1 lakh, subject to suitability and agreed scope.",
   // Pilot page must not be indexed until scope, evidence, disclosures and payment route are approved.
   robots: { index: false, follow: false },
+  openGraph: {
+    title: "Private Nutrition Advisory in India | Ashwini Gawad",
+    description: "Apply to discuss private, long-term nutrition guidance in India. Programmes subject to suitability and written scope.",
+    type: "website",
+  },
 };
 
 const principles = [
