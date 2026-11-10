@@ -21,6 +21,66 @@ export type Database = {
         | "CLOSED_LOST";
     };
     Tables: {
+      premium_enquiries: {
+        Row: {
+          id: string;
+          full_name: string;
+          phone: string;
+          email: string | null;
+          city: string;
+          service_interest: "individual" | "family" | "unsure";
+          budget_interest: "1l" | "5l" | "10l" | "unsure";
+          preferred_contact: "whatsapp" | "phone" | "email";
+          referral_source: string | null;
+          source_page: string;
+          utm_params: Json;
+          consent_accepted: boolean;
+          consent_version: string;
+          consent_text_snapshot: string;
+          status: "new" | "contacted" | "qualified" | "not_fit" | "converted" | "closed";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          full_name: string;
+          phone: string;
+          email?: string | null;
+          city: string;
+          service_interest: "individual" | "family" | "unsure";
+          budget_interest: "1l" | "5l" | "10l" | "unsure";
+          preferred_contact: "whatsapp" | "phone" | "email";
+          referral_source?: string | null;
+          source_page?: string;
+          utm_params?: Json;
+          consent_accepted: true;
+          consent_version: string;
+          consent_text_snapshot: string;
+          status?: "new" | "contacted" | "qualified" | "not_fit" | "converted" | "closed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          full_name?: string;
+          phone?: string;
+          email?: string | null;
+          city?: string;
+          service_interest?: "individual" | "family" | "unsure";
+          budget_interest?: "1l" | "5l" | "10l" | "unsure";
+          preferred_contact?: "whatsapp" | "phone" | "email";
+          referral_source?: string | null;
+          source_page?: string;
+          utm_params?: Json;
+          consent_accepted?: true;
+          consent_version?: string;
+          consent_text_snapshot?: string;
+          status?: "new" | "contacted" | "qualified" | "not_fit" | "converted" | "closed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       users: {
         Row: {
           id: string;
