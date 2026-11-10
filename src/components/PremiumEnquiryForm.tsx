@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, type FormEvent } from "react";
 import { submitPremiumEnquiry } from "@/app/private-nutrition/actions";
 import { PREMIUM_CONSENT_TEXT } from "@/lib/premium-enquiry/schema";
 
@@ -13,16 +13,21 @@ const WHATSAPP_URL =
 
 export function PremiumEnquiryForm() {
   const [state, action, pending] = useActionState(submitPremiumEnquiry, { ok: false });
-  const [utm, setUtm] = useState({ source: "", medium: "", campaign: "" });
-
-  useEffect(() => {
+  const fillAttribution = (event: FormEvent<HTMLFormElement>) => {
     const params = new URLSearchParams(window.location.search);
-    setUtm({
-      source: params.get("utm_source")?.slice(0, 150) ?? "",
-      medium: params.get("utm_medium")?.slice(0, 150) ?? "",
-      campaign: params.get("utm_campaign")?.slice(0, 150) ?? "",
-    });
-  }, []);
+    const form = event.currentTarget;
+    const entries = [
+      ["utmSource", "utm_source"],
+      ["utmMedium", "utm_medium"],
+      ["utmCampaign", "utm_campaign"],
+    ];
+    for (const [fieldName, paramName] of entries) {
+      const input = form.elements.namedItem(fieldName);
+      if (input instanceof HTMLInputElement) {
+        input.value = params.get(paramName)?.slice(0, 150) ?? "";
+      }
+    }
+  };
 
   if (state.ok) {
     return (
@@ -41,7 +46,7 @@ export function PremiumEnquiryForm() {
   }
 
   return (
-    <form action={action} className="space-y-5 rounded-2xl border border-white/15 bg-white/5 p-5 md:p-7" aria-label="Private nutrition advisory enquiry">
+    <form action={action} onSubmit={fillAttribution} className="space-y-5 rounded-2xl border border-white/15 bg-white/5 p-5 md:p-7" aria-label="Private nutrition advisory enquiry">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold-300">Confidential initial enquiry</p>
         <h2 className="mt-2 font-display text-2xl text-white">Request programme details</h2>
@@ -91,9 +96,9 @@ export function PremiumEnquiryForm() {
       <div className="absolute -left-[10000px]" aria-hidden="true">
         <label>Leave this empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
       </div>
-      <input type="hidden" name="utmSource" value={utm.source} />
-      <input type="hidden" name="utmMedium" value={utm.medium} />
-      <input type="hidden" name="utmCampaign" value={utm.campaign} />
+      <input type="hidden" name="utmSource" defaultValue="" />
+      <input type="hidden" name="utmMedium" defaultValue="" />
+      <input type="hidden" name="utmCampaign" defaultValue="" />
       <label className="flex items-start gap-3 text-sm leading-relaxed text-slate-300">
         <input name="consentAccepted" type="checkbox" required className="mt-1 h-4 w-4 accent-yellow-500" />
         <span>{PREMIUM_CONSENT_TEXT} <a href="/privacy" className="text-gold-300 underline underline-offset-2">Privacy notice</a>.</span>
