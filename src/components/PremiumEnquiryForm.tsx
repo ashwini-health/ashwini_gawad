@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { initialPremiumEnquiryState, submitPremiumEnquiry } from "@/app/private-nutrition/actions";
+import { submitPremiumEnquiry } from "@/app/private-nutrition/actions";
 import { PREMIUM_CONSENT_TEXT } from "@/lib/premium-enquiry/schema";
 
 const inputClass =
@@ -12,7 +12,7 @@ const WHATSAPP_URL =
   "https://wa.me/919769761766?text=Hello%20Ashwini%2C%20I%20would%20like%20to%20enquire%20about%20private%20nutrition%20advisory%20in%20India.";
 
 export function PremiumEnquiryForm() {
-  const [state, action, pending] = useActionState(submitPremiumEnquiry, initialPremiumEnquiryState);
+  const [state, action, pending] = useActionState(submitPremiumEnquiry, { ok: false });
   const [utm, setUtm] = useState({ source: "", medium: "", campaign: "" });
 
   useEffect(() => {
