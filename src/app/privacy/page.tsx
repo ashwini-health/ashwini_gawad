@@ -4,7 +4,7 @@ export const metadata: Metadata = { title: "Privacy Notice | Ashwini Gawad", rob
 
 export default function PrivacyNoticePage() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-24 text-slate-200">
+    <div className="mx-auto max-w-3xl px-4 py-24 text-slate-200">
       <h1 className="font-display text-4xl text-white">Privacy notice for initial enquiries</h1>
       <p className="mt-6 text-sm text-slate-400">Draft for owner/legal review before public launch. Version 2026-11-v1.</p>
       <p className="mt-6 leading-relaxed">
@@ -33,6 +33,6 @@ export default function PrivacyNoticePage() {
         appropriate retention period, any cross-border processing and full rights/complaint procedures.
         This draft must be reviewed and completed before publication.
       </p>
-    </main>
+    </div>
   );
 }
